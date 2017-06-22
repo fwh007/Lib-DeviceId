@@ -1,2 +1,2 @@
 # Lib-DeviceId
-设备ID研究项目
+文章：http://www.jianshu.com/p/671e1da50b33
