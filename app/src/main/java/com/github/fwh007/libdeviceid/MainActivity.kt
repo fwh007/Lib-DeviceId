@@ -1,8 +1,12 @@
 package com.github.fwh007.libdeviceid
 
-import android.support.v7.app.AppCompatActivity
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
+import code.solution.uuid.UUIDUtil
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -24,17 +28,35 @@ class MainActivity : AppCompatActivity() {
     fun update() {
         val build: StringBuilder = StringBuilder()
         build.append("Device ID:").append("\n")
-        build.append(IDUtil.getDeviceId(this)).append("\n\n")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            build.append(IDUtil.getDeviceId(this))
+        }
+        build.append("\n\n")
         build.append("Wifi Mac Address:").append("\n")
-        build.append(IDUtil.getWifiMacAddress(this)).append("\n\n")
+        build.append(IDUtil.getWifiMacAddress(this))
+        build.append("\n\n")
         build.append("Wifi Mac Address:").append("\n")
-        build.append(IDUtil.getWifiMacAddress()).append("\n\n")
+        build.append(IDUtil.getWifiMacAddress())
+        build.append("\n\n")
         build.append("Android Id:").append("\n")
-        build.append(IDUtil.getAndroidId(this)).append("\n\n")
+        build.append(IDUtil.getAndroidId(this))
+        build.append("\n\n")
         build.append("Build Info:").append("\n")
-        build.append(IDUtil.getBuildInfo()).append("\n\n")
+        build.append(IDUtil.getBuildInfo())
+        build.append("\n\n")
         build.append("Device UUID:").append("\n")
         build.append(IDUtil.getDeviceUUID(this))
+        build.append("\n\n")
+        build.append("=========================================")
+        build.append("\n\n")
+        build.append("UUID:").append("\n")
+        val hashUUID = UUIDUtil.getHashUUID(this)
+        val hashUUIDString = String(Hex.encodeHex(hashUUID))
+        build.append(hashUUIDString).append("\n")
+        build.append("\n\n")
+        build.append("Encrypt UUID:").append("\n")
+        build.append(UUIDUtil.getEncryptedUUID(this)).append("\n")
         contentTV.text = build
     }
 

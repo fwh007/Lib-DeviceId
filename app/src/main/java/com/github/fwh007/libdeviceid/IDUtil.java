@@ -1,23 +1,22 @@
 package com.github.fwh007.libdeviceid;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.RequiresPermission;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Enumeration;
 import java.util.Random;
 import java.util.UUID;
@@ -37,10 +36,14 @@ public class IDUtil {
      * @param context
      * @return
      */
+    @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
     public static String getDeviceId(Context context) {
-        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        String deviceId = telephonyManager.getDeviceId().toString();
-        return deviceId;
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            String deviceId = telephonyManager.getDeviceId();
+            return deviceId;
+        }
+        return "";
     }
 
     /**
@@ -69,7 +72,7 @@ public class IDUtil {
         while (interfaces.hasMoreElements()) {
             NetworkInterface anInterface = interfaces.nextElement();
             if (!"wlan0".equals(anInterface.getName())) {
-                //测试发现wlan0和才是正确的Wifi Mac地址
+                //测试发现wlan0才是正确的Wifi Mac地址
                 continue;
             }
             byte[] address = anInterface.getHardwareAddress();
