@@ -50,13 +50,13 @@ class MainActivity : AppCompatActivity() {
         build.append("\n\n")
         build.append("=========================================")
         build.append("\n\n")
-        build.append("UUID:").append("\n")
+        build.append("Encrypt UUID:").append("\n")
+        build.append(UUIDUtil.getEncryptedUUID(this))
+        build.append("\n\n")
+        build.append("Hash UUID:").append("\n")
         val hashUUID = UUIDUtil.getHashUUID(this)
         val hashUUIDString = String(Hex.encodeHex(hashUUID))
-        build.append(hashUUIDString).append("\n")
-        build.append("\n\n")
-        build.append("Encrypt UUID:").append("\n")
-        build.append(UUIDUtil.getEncryptedUUID(this)).append("\n")
+        build.append(hashUUIDString)
         contentTV.text = build
     }
 
