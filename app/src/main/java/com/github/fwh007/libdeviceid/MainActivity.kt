@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.TextView
 import code.solution.uuid.UUIDUtil
 import java.util.*
@@ -51,7 +52,9 @@ class MainActivity : AppCompatActivity() {
         build.append("=========================================")
         build.append("\n\n")
         build.append("Encrypt UUID:").append("\n")
-        build.append(UUIDUtil.getEncryptedUUID(this))
+        val encryptedUUID = UUIDUtil.getEncryptedUUID(this)
+        Log.d("uuid", encryptedUUID)
+        build.append(encryptedUUID)
         build.append("\n\n")
         build.append("Hash UUID:").append("\n")
         val hashUUID = UUIDUtil.getHashUUID(this)

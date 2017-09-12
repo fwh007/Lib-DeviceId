@@ -57,11 +57,11 @@ class UUIDTest {
         val data = json.getString("rdata")
         Log.d("uuidT", "data -> $data")
         assertTrue(data.isNotEmpty())
-        val rsaPrivateKey = TestConfig.RSA_PRIVATE_KEY
+        val rsaPrivateKey = TestConfig2.RSA_PRIVATE_KEY
         val aesKey = RSAUtil.decrypt(Base64.decode(key, Base64.DEFAULT), rsaPrivateKey.toByteArray())
         Log.d("uuidT", "aesKey -> ${String(aesKey)}")
         assertTrue(aesKey.isNotEmpty())
-        val plainText = AESUtil.decrypt("CBC", "PKCS5Padding", Base64.decode(data, Base64.DEFAULT), aesKey, TestConfig.AES_IV.toByteArray())
+        val plainText = AESUtil.decrypt("CBC", "PKCS5Padding", Base64.decode(data, Base64.DEFAULT), aesKey, TestConfig2.AES_IV.toByteArray())
         Log.d("uuidT", "plainText -> ${String(plainText)}")
         assertTrue(plainText.isNotEmpty())
         val plainTextJson = JSONObject(String(plainText))
