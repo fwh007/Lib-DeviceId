@@ -6,6 +6,8 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
 import code.solution.uuid.UUIDUtil
 import java.util.*
@@ -22,6 +24,21 @@ class MainActivity : AppCompatActivity() {
         update()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.menu_refresh -> {
+                update()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     fun init() {
         contentTV = findViewById(R.id.tv_content) as TextView
     }
@@ -34,11 +51,14 @@ class MainActivity : AppCompatActivity() {
             build.append(IDUtil.getDeviceId(this))
         }
         build.append("\n\n")
-        build.append("Wifi Mac Address:").append("\n")
+        build.append("Wifi Mac Address (System API):").append("\n")
         build.append(IDUtil.getWifiMacAddress(this))
         build.append("\n\n")
-        build.append("Wifi Mac Address:").append("\n")
+        build.append("Wifi Mac Address (Scan Interface):").append("\n")
         build.append(IDUtil.getWifiMacAddress())
+        build.append("\n\n")
+        build.append("Wifi Mac Address (Analyze IP):").append("\n")
+        build.append(IDUtil.getWifiMacAddressByIp())
         build.append("\n\n")
         build.append("Android Id:").append("\n")
         build.append(IDUtil.getAndroidId(this))
